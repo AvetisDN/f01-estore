@@ -55,6 +55,37 @@ const Storage = {
             </li>`
         }
     },
+    fetchBigCart() {
+        const cart = this.getCart()
+        const bigCartTable = document.querySelector('#big-cart tbody')
+        const bigCartSummary = document.querySelector('#big-cart-summary')
+
+        bigCartTable.innerHTML = ''
+        bigCartSummary.innerHTML = ''
+
+        if(this.getTotalQuantity() === 0) {
+            bigCartTable.innerHTML += `<tr><td colspan="5" class="text-center display-3">The Cart is empty</td></tr>`
+        } else {
+            cart.forEach(item => {
+                bigCartTable.innerHTML += `
+                <tr>
+                    <td>
+                        <img src="/products/${item.image}" alt="${item.title}" style="width: 80px">
+                    </td>
+                    <td>${item.title}</td>
+                    <td>
+                        <input type="number" value="${item.quantity}" data-id="${item.id}" min="1" step="1" class="form-control change-product-quantity">
+                    </td>
+                    <td>${item.price}</td>
+                    <td>
+                        <button class="btn remove-from-cart-button" data-id="${item.id}"></button>
+                    </td>
+                </tr>
+                `
+            })
+            bigCartSummary.innerHTML += `Total ${this.getTotalQuantity()} products in ammount of $${this.getTotalPrice()}`
+        }
+    },
     addToCart: function(product) {
         const cart = this.getCart()
         let i = cart.findIndex(item => item.id === product.id)
@@ -66,6 +97,20 @@ const Storage = {
         }
         localStorage.setItem('cart', JSON.stringify(cart))
         this.fetchCart()
+    },
+    removeFromCart: function(id) {
+        const cart = this.getCart()
+        cart.splice(cart.findIndex(item => item.id == id), 1)
+        localStorage.setItem('cart', JSON.stringify(cart))
+        this.fetchCart()
+        this.fetchBigCart()
+    },
+    changeQuantity: function (id, quantity) {
+        const cart = this.getCart()
+        cart[cart.findIndex(item => item.id == id)].quantity = quantity
+        localStorage.setItem('cart', JSON.stringify(cart))
+        this.fetchCart()
+        this.fetchBigCart()
     }
 }
 

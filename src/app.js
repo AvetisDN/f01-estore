@@ -14,4 +14,14 @@ document.onclick = function(e) {
         })
         e.target.setAttribute('disabled', true)
     }
+    if(e.target.classList.contains('remove-from-cart-button')) {
+        if(confirm('Are you sure?')) {
+            Storage.removeFromCart(e.target.getAttribute('data-id'))
+        }
+    }
+}
+document.onchange = function(e) {
+    if(e.target.classList.contains('change-product-quantity')) {
+        Storage.changeQuantity(e.target.getAttribute('data-id'), e.target.value)
+    }
 }

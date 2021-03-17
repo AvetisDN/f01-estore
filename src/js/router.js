@@ -1,5 +1,6 @@
 import Home from './home'
 import Cart from './cart'
+import Storage from "./_storage";
 
 const routeView = document.querySelector('#route-view')
 const routerLinks = document.querySelectorAll('a[data-route]')
@@ -20,6 +21,9 @@ routerLinks.forEach((link, index) => {
         e.preventDefault()
         const match = routes.find((route, index) => route.path === this.getAttribute('href'))
         renderComponent(match.component.render(), match.component.name)
+        if(match.component === Cart) {
+            Storage.fetchBigCart()
+        }
         setActiveLink(this)
     }
 })

@@ -49,3 +49,12 @@
         content: '\f239'
     }
 }
+
+.remove-from-cart-button {
+    &::after {
+        display: block;
+        font-family: bootstrap-icons;
+        content: '\f5dd';
+        color: $danger;
+    }
+}
